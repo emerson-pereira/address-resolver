@@ -1,8 +1,8 @@
-var express = require('express');
-var fetch = require('node-fetch');
-var router = express.Router();
+const express = require('express');
+const resolveAddress = require('../services/resolve-address');
+const router = express.Router();
 
-router.post('/', function(req, res, next) {
+router.post('/', (req, res) => {
   const { zipCode } = req.body;
 
   if (!zipCode) {
@@ -12,23 +12,15 @@ router.post('/', function(req, res, next) {
     });
   }
 
-  fetch(`https://viacep.com.br/ws/${zipCode}/json/`)
-    .then(blob => blob.json())
-    .then(data => {
-      if (data && data.cep) {
-        const { cep, uf: estado, localidade: cidade, logradouro } = data;
-
-        res.json({
-          cep,
-          estado,
-          cidade,
-          logradouro
-        });
+  resolveAddress(zipCode)
+    .then(address => {
+      res.json(address);
+    })
+    .catch(err => {
+      if (err.error) {
+        res.status(502);
       } else {
-        res.json({
-          error: true,
-          message: 'failed, :/'
-        });
+        res.status(500);
       }
     });
 });
