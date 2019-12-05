@@ -1,4 +1,4 @@
-const resolveAddress = require('../services/resolve-address');
+const resolveAddress = require('../../services/resolve-address');
 
 const expected = {
   cep: '09960-430',

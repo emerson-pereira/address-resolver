@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "test": "jest"
+    "start": "DEBUG=backend:* nodemon ./bin/www",
+    "test": "jest",
+    "test:unit": "jest ./tests/unit",
+    "test:e2e": "jest ./tests/e2e"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -16,6 +18,8 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "jest-puppeteer": "^4.3.0",
+    "puppeteer": "^2.0.0"
   }
 }

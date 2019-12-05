@@ -80,18 +80,16 @@ const AddressForm = () => {
     <>
       <form className="address-form">
         <InputMask
-          className="address-form-input address-form-input__text"
+          className="address-form-input"
           type="text"
           margin="none"
           variant="filled"
           value={zipCode}
+          placeholder="CEP"
           onChange={e => updateZipCode(e.target.value)}
           mask="99999-999"
-        ></InputMask>
-        <button
-          className="address-form-button address-form-input--submit"
-          onClick={fetchAddress}
-        >
+        />
+        <button className="address-form-button" onClick={fetchAddress}>
           Buscar CEP
         </button>
       </form>
