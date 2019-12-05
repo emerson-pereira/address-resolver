@@ -9,24 +9,32 @@ const resolveAddress = zipCode => {
     fetch(url)
       .then(blob => blob.json())
       .then(data => {
+        if (data && data.erro) {
+          reject({
+            error: true,
+            message: 'CEP inexistente',
+            status: 406
+          });
+        }
         if (data && data.cep) {
-          const { cep, uf: estado, localidade: cidade, logradouro } = data;
+          const { cep, logradouro, localidade, uf } = data;
 
           resolve({
             cep,
-            estado,
-            cidade,
-            logradouro
+            logradouro,
+            localidade,
+            uf
           });
         } else {
           reject({
             error: true,
-            message: 'Error resolving adress'
+            message: 'Erro ao buscar CEP'
           });
         }
       })
       .catch(err => {
-        reject({ error: true, message: err });
+        // Push error to log service
+        reject({ error: true, message: 'Erro ao buscar CEP' });
       });
   });
 };

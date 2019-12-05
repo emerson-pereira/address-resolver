@@ -14,7 +14,7 @@ const AddressSummary = ({ address }) => {
     <section className="address-summary">
       <ul className="address-summary-list">
         {Object.entries(address).map(([key, value]) => (
-          <li className="address-summary-list-item" key={`item-${key}`}>
+          <li className="address-summary-list-item" key={`address-item-${key}`}>
             <p>
               <b>{labels[key]}:</b> {value}
             </p>

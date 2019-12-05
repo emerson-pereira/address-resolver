@@ -53,17 +53,22 @@ const AddressForm = () => {
     fetch(url, options)
       .then(blob => blob.json())
       .then(res => {
+        if (res && res.error) {
+          alert(res.message);
+          return;
+        }
+
         if (res && res.cep) {
-          const { cep, estado, cidade, logradouro } = res;
+          const { cep, logradouro, localidade: cidade, uf: estado } = res;
 
           updateAddress({
             cep,
-            estado,
+            logradouro,
             cidade,
-            logradouro
+            estado
           });
         } else {
-          alert('ops :/');
+          alert('Erro inesperado, favor tentar novamente');
         }
       })
       .then(() => {

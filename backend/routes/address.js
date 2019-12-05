@@ -18,9 +18,15 @@ router.post('/', (req, res) => {
     })
     .catch(err => {
       if (err.error) {
-        res.status(502);
+        res.status(err.status || 502).json({
+          error: true,
+          message: err.message
+        });
       } else {
-        res.status(500);
+        res.status(500).json({
+          error: true,
+          message: 'Erro inesperado no servidor'
+        });
       }
     });
 });
