@@ -1,4 +1,12 @@
 .address-summary {
-  background-color: orangered;
+  border: 1px solid #000;
+  background-color: mistyrose;
+  margin: 10px;
   width: 50vw;
+
+  &-list {
+    list-style-type: none;
+    &-item {
+    }
+  }
 }

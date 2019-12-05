@@ -1,14 +1,14 @@
-var express = require("express");
-var fetch = require("node-fetch");
+var express = require('express');
+var fetch = require('node-fetch');
 var router = express.Router();
 
-router.post("/", function(req, res, next) {
+router.post('/', function(req, res, next) {
   const { zipCode } = req.body;
 
   if (!zipCode) {
     res.json({
       error: true,
-      message: "failed, no zipcode"
+      message: 'failed, no zipcode'
     });
   }
 
@@ -16,7 +16,6 @@ router.post("/", function(req, res, next) {
     .then(blob => blob.json())
     .then(data => {
       if (data && data.cep) {
-        console.log("data", data);
         const { cep, uf: estado, localidade: cidade, logradouro } = data;
 
         res.json({
@@ -28,7 +27,7 @@ router.post("/", function(req, res, next) {
       } else {
         res.json({
           error: true,
-          message: "failed, :/"
+          message: 'failed, :/'
         });
       }
     });

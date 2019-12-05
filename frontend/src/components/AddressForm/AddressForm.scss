@@ -1,12 +1,28 @@
 .address-form {
-  background-color: orange;
-  height: 100px;
+  border: 1px solid #000;
+  background-color: mistyrose;
+  margin: 10px;
+  width: 50vw;
+
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  width: 50vw;
-}
+  justify-content: center;
 
-.address-form > * {
-  // margin: 10px;
+  & > * {
+    padding: 20px;
+    margin: 20px;
+    height: auto;
+    border: 0;
+    border: 1px solid #000;
+  }
+
+  &-input {
+    height: 20px;
+  }
+
+  &-button {
+    height: calc(20px + 40px);
+    background-color: gainsboro;
+    font-weight: bold;
+  }
 }

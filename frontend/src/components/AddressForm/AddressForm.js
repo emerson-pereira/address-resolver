@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AddressSummary from '../AddressSummary';
+import InputMask from 'react-input-mask';
 
 import './AddressForm.scss';
 
@@ -15,6 +16,11 @@ const AddressForm = () => {
 
   const fetchAddress = e => {
     e.preventDefault();
+
+    if (!zipCode) {
+      return;
+    }
+
     const url = 'http://localhost:4000/address';
     const options = {
       method: 'POST',
@@ -45,14 +51,21 @@ const AddressForm = () => {
   return (
     <>
       <form className="address-form">
-        <input
+        <InputMask
+          className="address-form-input address-form-input__text"
           type="text"
           margin="none"
           variant="filled"
           value={zipCode}
           onChange={e => updateZipCode(e.target.value)}
-        />
-        <button onClick={fetchAddress}>Buscar CEP</button>
+          mask="99999-999"
+        ></InputMask>
+        <button
+          className="address-form-button address-form-input--submit"
+          onClick={fetchAddress}
+        >
+          Buscar CEP
+        </button>
       </form>
       {!!address.cep.length && <AddressSummary address={address} />}
     </>
