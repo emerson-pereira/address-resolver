@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AddressSummary from '../AddressSummary';
 import InputMask from 'react-input-mask';
+import NProgress from 'nprogress';
 
 import './AddressForm.scss';
 
@@ -14,17 +15,36 @@ const AddressForm = () => {
     logradouro: ''
   });
 
+  const formatZipCode = zipCode => {
+    return zipCode.replace('-', '');
+  };
+
+  const isZipCodeValid = zipCode => {
+    const validateZipCode = /^[0-9]{8}$/;
+    return validateZipCode.test(zipCode);
+  };
+
   const fetchAddress = e => {
     e.preventDefault();
 
     if (!zipCode) {
+      alert('Ops, acho que você esqueceu de preencher o CEP 👀');
       return;
     }
+
+    const zipCodeFormatted = formatZipCode(zipCode);
+
+    if (!isZipCodeValid(zipCodeFormatted)) {
+      alert('Olha, eu não reconheci esse formato de CEP 😐');
+      return;
+    }
+
+    NProgress.start();
 
     const url = 'http://localhost:4000/address';
     const options = {
       method: 'POST',
-      body: JSON.stringify({ zipCode }),
+      body: JSON.stringify({ zipCode: zipCodeFormatted }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -45,6 +65,9 @@ const AddressForm = () => {
         } else {
           alert('ops :/');
         }
+      })
+      .then(() => {
+        NProgress.done();
       });
   };
 
