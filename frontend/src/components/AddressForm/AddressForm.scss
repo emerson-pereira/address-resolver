@@ -1,0 +1,12 @@
+.address-form {
+  background-color: orange;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 50vw;
+}
+
+.address-form > * {
+  // margin: 10px;
+}
