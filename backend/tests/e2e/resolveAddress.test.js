@@ -1,9 +1,18 @@
 describe('Google', () => {
   beforeAll(async () => {
-    await page.goto('http://localhost:3000/');
+    await page.goto('http://localhost:3000');
   });
 
-  it('should have "cidade" as "Diadema"', async () => {
-    await expect(page.title()).resolves.toMatch('Address Resolver');
+  it('should contain "Cidade: Diadema"', async () => {
+    await page.waitForSelector('.address-form-input');
+    await page.type('.address-form-input', '09960-430');
+    await page.click('.address-form-button');
+    await page.waitForSelector('.address-summary-list-item');
+    const cidadeItem = await page.evaluate(() => {
+      return document.querySelector(
+        '.address-summary-list-item:nth-child(3) > p'
+      ).innerText;
+    });
+    await expect(cidadeItem).toBe('Cidade: Diadema');
   });
 });
