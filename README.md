@@ -20,3 +20,11 @@ npm start
 
 - Front-end: `3000`
 - Back-end: `4000`
+
+## Test
+
+Inside the `backend` folder run test script
+
+```
+npm test
+```
