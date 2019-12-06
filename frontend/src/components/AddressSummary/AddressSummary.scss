@@ -2,9 +2,15 @@
   border: 1px solid #000;
   background-color: mistyrose;
   margin: 10px;
+  padding: 20px;
   width: 50vw;
+
+  @media all and (max-width: 1000px) {
+    width: 80vw;
+  }
 
   &-list {
     list-style-type: none;
+    padding: 10px;
   }
 }

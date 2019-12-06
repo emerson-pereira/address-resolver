@@ -82,8 +82,6 @@ const AddressForm = () => {
         <InputMask
           className="address-form-input"
           type="text"
-          margin="none"
-          variant="filled"
           value={zipCode}
           placeholder="CEP"
           onChange={e => updateZipCode(e.target.value)}
