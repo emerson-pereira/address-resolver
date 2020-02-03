@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "DEBUG=backend:* nodemon ./bin/www",
+    "start": "nodemon ./bin/www",
     "test": "jest",
     "test:unit": "jest ./tests/unit",
     "test:e2e": "jest ./tests/e2e"
