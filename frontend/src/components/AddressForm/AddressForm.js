@@ -1,79 +1,75 @@
 import React, { useState } from 'react';
-import AddressSummary from '../AddressSummary';
 import InputMask from 'react-input-mask';
 import NProgress from 'nprogress';
 
+import gql from 'graphql-tag';
+import { useLazyQuery } from '@apollo/client';
+
+import AddressSummary from '../AddressSummary';
 import './AddressForm.scss';
 
-const AddressForm = () => {
-  const [zipCode, updateZipCode] = useState('');
+const GET_ADDRESS = gql`
+  query Address($zip: String!) {
+    address(zip: $zip) {
+      cep
+      uf
+      localidade
+      logradouro
+    }
+  }
+`;
 
-  const [address, updateAddress] = useState({
+const AddressForm = () => {
+  const [zipCode, setZipCode] = useState('');
+
+  const [getAddress, { loading, data }] = useLazyQuery(GET_ADDRESS);
+
+  loading && NProgress.start();
+  !loading && NProgress.done();
+
+  const address = {
     cep: '',
     estado: '',
     cidade: '',
-    logradouro: ''
-  });
+    logradouro: '',
+  };
 
-  const formatZipCode = zipCode => {
+  if (data && data.address) {
+    address.cep = data.address.cep;
+    address.estado = data.address.uf;
+    address.cidade = data.address.localidade;
+    address.logradouro = data.address.logradouro;
+  }
+
+  const formatZipCode = (zipCode) => {
     return zipCode.replace('-', '');
   };
 
-  const isZipCodeValid = zipCode => {
+  const isZipCodeValid = (zipCode) => {
     const validateZipCode = /^[0-9]{8}$/;
     return validateZipCode.test(zipCode);
   };
 
-  const fetchAddress = e => {
+  const handleInputClick = (e) => {
     e.preventDefault();
+
+    const zipCodeFormatted = formatZipCode(zipCode);
 
     if (!zipCode) {
       alert('Ops, acho que você esqueceu de preencher o CEP 👀');
       return;
     }
 
-    const zipCodeFormatted = formatZipCode(zipCode);
-
     if (!isZipCodeValid(zipCodeFormatted)) {
       alert('Olha, eu não reconheci esse formato de CEP 😐');
       return;
     }
 
-    NProgress.start();
-
-    const url = 'http://localhost:4000/address';
-    const options = {
-      method: 'POST',
-      body: JSON.stringify({ zipCode: zipCodeFormatted }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-
-    fetch(url, options)
-      .then(blob => blob.json())
-      .then(res => {
-        if (res && res.error) {
-          alert(res.message);
-          return;
-        }
-
-        if (res && res.cep) {
-          const { cep, logradouro, localidade: cidade, uf: estado } = res;
-
-          updateAddress({
-            cep,
-            logradouro,
-            cidade,
-            estado
-          });
-        } else {
-          alert('Erro inesperado, favor tentar novamente');
-        }
-      })
-      .then(() => {
-        NProgress.done();
-      });
+    getAddress({
+      variables: {
+        zip: zipCode,
+      },
+    });
   };
 
   return (
@@ -84,14 +80,14 @@ const AddressForm = () => {
           type="text"
           value={zipCode}
           placeholder="CEP"
-          onChange={e => updateZipCode(e.target.value)}
+          onChange={(e) => setZipCode(e.target.value)}
           mask="99999-999"
         />
-        <button className="address-form-button" onClick={fetchAddress}>
+        <button className="address-form-button" onClick={handleInputClick}>
           Buscar CEP
         </button>
       </form>
-      {!!address.cep.length && <AddressSummary address={address} />}
+      {address.cep && <AddressSummary address={address} />}
     </>
   );
 };
