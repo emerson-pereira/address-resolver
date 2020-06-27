@@ -9,7 +9,6 @@ import {
 
 import './App.scss';
 
-// http://localhost:4000
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({

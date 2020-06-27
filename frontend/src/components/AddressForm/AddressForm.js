@@ -50,7 +50,7 @@ const AddressForm = () => {
     return validateZipCode.test(zipCode);
   };
 
-  const handleInputClick = (e) => {
+  const handleButtonClick = (e) => {
     e.preventDefault();
 
     const zipCodeFormatted = formatZipCode(zipCode);
@@ -83,7 +83,7 @@ const AddressForm = () => {
           onChange={(e) => setZipCode(e.target.value)}
           mask="99999-999"
         />
-        <button className="address-form-button" onClick={handleInputClick}>
+        <button className="address-form-button" onClick={handleButtonClick}>
           Buscar CEP
         </button>
       </form>
