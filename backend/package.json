@@ -3,17 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "DEBUG=backend:* nodemon ./bin/www",
+    "start": "nodemon ./app",
     "test": "jest",
     "test:unit": "jest ./tests/unit",
     "test:e2e": "jest ./tests/e2e"
   },
   "dependencies": {
+    "apollo-server": "^2.15.0",
+    "apollo-server-express": "^2.15.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "graphql": "^15.1.0",
     "morgan": "~1.9.1",
     "node-fetch": "^2.6.0"
   },

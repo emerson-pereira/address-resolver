@@ -1,25 +1,32 @@
-var express = require("express");
-var path = require("path");
-var bodyParser = require("body-parser");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var cors = require("cors");
+const { ApolloServer, gql } = require('apollo-server');
+const resolveAddress = require('./services/resolve-address');
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/address");
+const typeDefs = gql`
+  type Address {
+    cep: String
+    logradouro: String
+    complemento: String
+    bairro: String
+    localidade: String
+    uf: String
+    unidade: String
+    ibge: String
+    gia: String
+  }
 
-var app = express();
+  type Query {
+    address(zip: String): Address
+  }
+`;
 
-app.use(cors());
+const resolvers = {
+  Query: {
+    address: (_, { zip }) => resolveAddress(zip),
+  },
+};
 
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser());
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+const server = new ApolloServer({ typeDefs, resolvers });
 
-app.use("/", indexRouter);
-app.use("/address", usersRouter);
-
-module.exports = app;
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
+});
